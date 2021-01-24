@@ -1,0 +1,7 @@
+project_name              = "mayan-edms"
+do_token                  = ""
+region                    = "fra1"
+size                      = "s-1vcpu-2gb"
+terraform_public_ssh_key  = "ssh.pub"
+terraform_private_ssh_key = "ssh"
+domain                    = "example.com"
