@@ -11,14 +11,15 @@ Adjust the terraform.tfvars:
 * Generate a ssh-key pair without a passphrase and adjust the terraform_public_ssh_key and terraform_private_ssh_key accordingly.
 * desktop_public_ssh_key is a key for you to log into the droplet.
 * do_token has to be your DigitalOcean access token.
-* domain is required for the domain entry, if you don't own a domain remove the corresponding part from the main.tf.
-Adjust the nginx.conf to remove tls if desired, else adjust the domain name.
+* domain is required for the domain entry, if you don't own a domain remove the corresponding part from the main.tf and adjust the nginx.conf.
+Also, adjust the nginx.conf to remove tls if desired.
 * If you wish to encrypt the digitalocean volume via LUKA use the encryptDisk.sh script for initial setup and the mountEncryptedDisk script for later use.
 * The updateOS.sh shell script is just a convenience script to make updating the droplet OS easier.
 * Now just run terraform init followed up by terraform apply / destroy as usual.
 
 ## What is created at digitalocean?
-* One droplet with 1 cpu and 2gb ram droplet with an attached volume.
+* One droplet with 4 cpu and 8gb ram droplet with an attached volume.
+* A firewall to allow inbound http/https connections to the droplet, but limit ssh to your ip address as provided via the terraform variables. 
 * A project called mayan-edms to manage the droplet.
 * A domain with a A-level dns entry as well as a CNAME alias.
 * One ssh public key for terraform and one for the desktop user (possible to be identical).

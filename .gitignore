@@ -2,3 +2,4 @@
 *ssh*
 *.tfstate*
 .terraform
+files

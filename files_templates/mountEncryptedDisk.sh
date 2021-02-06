@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir -p /mnt/data
 cryptsetup -q -v -d /root/.secure-key luksOpen /dev/disk/by-id/scsi-0DO_Volume_mayan-edms-volume secure-mayan-volume
 mount -o discard,defaults,noatime /dev/mapper/secure-mayan-volume /mnt/data
 echo 'secure-mayan-volume /dev/disk/by-id/scsi-0DO_Volume_mayan-edms-volume /root/.secure-key luks' | tee -a /etc/crypttab

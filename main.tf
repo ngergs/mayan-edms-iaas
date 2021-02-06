@@ -4,6 +4,18 @@ provider "digitalocean" {
 }
 
 ################
+# template-files
+################
+resource "template_dir" "mayan-edms" {
+  source_dir      = "${path.module}/files_templates"
+  destination_dir = "${path.module}/files"
+
+  vars = {
+    domain = var.domain
+  }
+}
+
+################
 # ssh
 ################
 resource "digitalocean_ssh_key" "terraform_public" {
@@ -20,29 +32,34 @@ data "digitalocean_ssh_key" "laptop_public" {
 ################
 # project
 ################
-resource "digitalocean_project" "mayan-edms" {
+#resource "digitalocean_project" "mayan-edms" {
+#  name        = var.project_name
+#  description = "A project to experiment with the mayan-edms dms"
+#  purpose = "Web Application" 
+#  environment = "Development" 
+#  resources = [digitalocean_droplet.mayan-edms.urn, digitalocean_domain.mayan-edms.urn, digitalocean_volume.mayan-edms.urn]
+#}
+data "digitalocean_project" "mayan-edms" {
   name        = var.project_name
-  description = "A project to experiment with the mayan-edms dms"
-  purpose = "Web Application" 
-  environment = "Development" 
-  resources = [digitalocean_droplet.mayan-edms.urn, digitalocean_domain.mayan-edms.urn, digitalocean_volume.mayan-edms.urn]
+}
+resource "digitalocean_project_resources" "mayan-edms" {
+  project = data.digitalocean_project.mayan-edms.id
+  resources = [digitalocean_droplet.mayan-edms.urn, digitalocean_domain.mayan-edms.urn, data.digitalocean_volume.mayan-edms.urn]
 }
 
 ################
 # droplet
 ################
-#data "digitalocean_volume" "mayan-edms" {
-#  name = "mayan-edms-volume"
-#}
 resource "digitalocean_droplet" "mayan-edms" {
   image  = "docker-18-04"
   name   = "mayan-edms"
+  monitoring = true
   region = var.region
   size   = var.size
   ssh_keys = [data.digitalocean_ssh_key.desktop_public.id, digitalocean_ssh_key.terraform_public.id, data.digitalocean_ssh_key.laptop_public.id]
-  volume_ids  = [digitalocean_volume.mayan-edms.id]
+  volume_ids  = [data.digitalocean_volume.mayan-edms.id]
   provisioner "file" {
-    source      = "files/"
+    source = "${template_dir.mayan-edms.destination_dir}/"
     destination = "/root/"
     connection {
         host = digitalocean_droplet.mayan-edms.ipv4_address
@@ -80,12 +97,65 @@ resource "digitalocean_record" "mayan-edms-www" {
  name = "www"
  value = "@"
 }
+
 ################
 # initial volume
 ################
-resource "digitalocean_volume" "mayan-edms" {
-  region                  = var.region
-  name                    = "mayan-edms-volume"
-  size                    = 50
-  initial_filesystem_type = "ext4"
+#resource "digitalocean_volume" "mayan-edms" {
+#  region                  = var.region
+#  name                    = "mayan-edms-volume"
+#  size                    = 50
+#  initial_filesystem_type = "ext4"
+#}
+data "digitalocean_volume" "mayan-edms" {
+  name = "mayan-edms-volume"
+}
+
+################
+# firewall
+################
+resource "digitalocean_firewall" "mayan_edms" {
+  name = "http-all-ssh-ip-limited"
+
+  droplet_ids = [digitalocean_droplet.mayan-edms.id]
+
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "22"
+    source_addresses = [var.my_ip_address]
+  }
+
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "80"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "443"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  inbound_rule {
+    protocol         = "icmp"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  outbound_rule {
+    protocol              = "tcp"
+    port_range            = "1-65535"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  outbound_rule {
+    protocol              = "udp"
+    port_range            = "1-65535"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  outbound_rule {
+    protocol              = "icmp"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
 }

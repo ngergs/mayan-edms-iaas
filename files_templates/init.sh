@@ -13,11 +13,12 @@ add-apt-repository ppa:certbot/certbot -y
 apt-get -y install nginx python-certbot-nginx
 ufw allow 'Nginx Full'
 rm /etc/nginx/sites-enabled/default
-mv nginx.conf /etc/nginx/sites-available/example.com
+mv nginx.conf /etc/nginx/sites-available/${domain}
 rm -r /etc/letsencrypt/
 mkdir -p /mnt/data/letsencrypt
 ln -s /mnt/data/letsencrypt/ /etc/
 rm /etc/nginx/sites-available/default
-ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/${domain} /etc/nginx/sites-enabled/
 systemctl enable nginx
+systemctl stop nginx
 systemctl start nginx
