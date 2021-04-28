@@ -121,6 +121,15 @@ resource "digitalocean_record" "mayan-edms-www" {
  value = "@"
  ttl = 43200
 }
+resource "digitalocean_record" "mayan-edms-caa" {
+ domain = data.digitalocean_domain.mayan-edms.name
+ type = "CAA"
+ name = "@"
+ value = "letsencrypt.org."
+ tag = "issue"
+ flags = 128
+ ttl = 43200
+}
 
 ################
 # initial volume
