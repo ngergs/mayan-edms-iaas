@@ -9,8 +9,11 @@ mkdir -p /mnt/data/postgres
 docker-compose -f /root/docker-compose.yml up -d
 
 #nginx
-add-apt-repository ppa:certbot/certbot -y
-apt-get -y install nginx python-certbot-nginx
+apt-get -y install nginx
+snap install core
+snap refresh core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
 ufw allow 'Nginx Full'
 rm /etc/nginx/sites-enabled/default
 mv nginx.conf /etc/nginx/sites-available/${domain}
