@@ -58,7 +58,7 @@ resource "digitalocean_project_resources" "mayan-edms" {
 # droplet
 ################
 resource "digitalocean_droplet" "mayan-edms" {
-  image  = "docker-18-04"
+  image  = "docker-20-04"
   name   = "mayan-edms"
   ipv6 = true
   monitoring = true
