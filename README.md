@@ -4,7 +4,7 @@ This is a simple example terraform project that sets up a digitalocean droplet a
 
 ## What is setup?
 A [simple docker installation for mayan edms](https://docs.mayan-edms.com/chapters/docker/install_simple.html) consisting of an application container, a postgresql container and a redis container. The mayan-edms only listens at 
-8080 on localhost. A nginx reverse proxy is used for SSL termination and proxy passes than from port 443 to 8080. n port 443.
+8080 on localhost. A nginx reverse proxy is used for SSL termination and proxy passes than from port 443 to 8080.
 
 ## How to use it?
 Adjust the terraform.tfvars:
