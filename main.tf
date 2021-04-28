@@ -51,7 +51,7 @@ data "digitalocean_project" "mayan-edms" {
 }
 resource "digitalocean_project_resources" "mayan-edms" {
   project = data.digitalocean_project.mayan-edms.id
-  resources = [digitalocean_droplet.mayan-edms.urn, digitalocean_domain.mayan-edms.urn, data.digitalocean_volume.mayan-edms.urn]
+  resources = [digitalocean_droplet.mayan-edms.urn, data.digitalocean_domain.mayan-edms.urn, data.digitalocean_volume.mayan-edms.urn]
 }
 
 ################
@@ -60,6 +60,7 @@ resource "digitalocean_project_resources" "mayan-edms" {
 resource "digitalocean_droplet" "mayan-edms" {
   image  = "docker-18-04"
   name   = "mayan-edms"
+  ipv6 = true
   monitoring = true
   region = var.region
   size   = var.size
@@ -86,23 +87,39 @@ resource "digitalocean_droplet" "mayan-edms" {
 #    }
 #  }
 }
-output "droplet_ip_addr" {
+output "droplet_ipv4_addr" {
   value = digitalocean_droplet.mayan-edms.ipv4_address
   description = "ipv4 address of the created droplet"
+}
+output "droplet_ipv6_addr" {
+  value = digitalocean_droplet.mayan-edms.ipv6_address
+  description = "ipv6 address of the created droplet"
 }
 
 ################
 # domain/dns
 ################
-resource "digitalocean_domain" "mayan-edms" {
+data "digitalocean_domain" "mayan-edms" {
   name       = var.domain
-  ip_address = digitalocean_droplet.mayan-edms.ipv4_address
+}
+resource "digitalocean_record" "mayan-edms-ipv4" {
+  domain = data.digitalocean_domain.mayan-edms.name
+  type   = "A"
+  name   = "@"
+  value  = digitalocean_droplet.mayan-edms.ipv4_address
+}
+resource "digitalocean_record" "mayan-edms-ipv6" {
+  domain = data.digitalocean_domain.mayan-edms.name
+  type   = "AAAA"
+  name   = "@"
+  value  = digitalocean_droplet.mayan-edms.ipv6_address
 }
 resource "digitalocean_record" "mayan-edms-www" {
- domain = digitalocean_domain.mayan-edms.name
+ domain = data.digitalocean_domain.mayan-edms.name
  type = "CNAME"
  name = "www"
  value = "@"
+ ttl = 43200
 }
 
 ################

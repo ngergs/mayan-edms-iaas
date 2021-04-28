@@ -21,5 +21,5 @@ Also, adjust the nginx.conf to remove tls if desired.
 * One droplet with 4 cpu and 8gb ram droplet with an attached volume.
 * A firewall to allow inbound http/https connections to the droplet, but limit ssh to your ip address as provided via the terraform variables. 
 * A project called mayan-edms to manage the droplet.
-* A domain with a A-level dns entry as well as a CNAME alias.
+* A domain with a A-level and AAAA-level dns entry as well as a CNAME alias.
 * One ssh public key for terraform and one for the desktop user (possible to be identical).
