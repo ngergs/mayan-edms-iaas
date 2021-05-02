@@ -22,4 +22,6 @@ variable "domain" {
 variable "my_ip_address" {
   type = string
 }
-
+variable "hsts_preload" {
+  type = bool
+}

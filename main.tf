@@ -19,6 +19,7 @@ resource "template_dir" "mayan-edms" {
 
   vars = {
     domain = var.domain
+    hsts_preload = var.hsts_preload
   }
 }
 
