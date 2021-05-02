@@ -6,4 +6,5 @@ terraform_public_ssh_key  = "ssh.pub"
 terraform_private_ssh_key = "ssh"
 domain                    = ""
 my_ip_address             = ""
+hsts                      = false
 hsts_preload              = false
