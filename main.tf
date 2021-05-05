@@ -21,6 +21,7 @@ resource "template_dir" "mayan-edms" {
     domain = var.domain
     hsts = var.hsts
     hsts_preload = var.hsts_preload
+    expect_ct = var.expect_ct
   }
 }
 

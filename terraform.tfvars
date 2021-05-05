@@ -8,3 +8,4 @@ domain                    = ""
 my_ip_address             = ""
 hsts                      = false
 hsts_preload              = false
+expect_ct                 = false

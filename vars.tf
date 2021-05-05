@@ -28,3 +28,6 @@ variable "hsts" {
 variable "hsts_preload" {
   type = bool
 }
+variable "expect_ct" {
+  type = bool
+}
