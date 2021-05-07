@@ -4,6 +4,9 @@ variable "do_token" {
 variable "project_name" {
   type = string
 }
+variable "volume_name" {
+  type = string
+}
 variable "region" {
   type = string
 }
@@ -16,18 +19,6 @@ variable "terraform_public_ssh_key" {
 variable "terraform_private_ssh_key" {
   type = string
 }
-variable "domain" {
-  type = string
-}
 variable "my_ip_address" {
   type = string
-}
-variable "hsts" {
-  type = bool
-}
-variable "hsts_preload" {
-  type = bool
-}
-variable "expect_ct" {
-  type = bool
 }

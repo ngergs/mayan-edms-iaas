@@ -1,0 +1,7 @@
+- name: Template tlsa script
+  ansible.builtin.template:
+    src: tlsa.sh
+    dest: /root/
+    owner: root
+    group: root
+    mode: '0744'

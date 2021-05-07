@@ -1,0 +1,64 @@
+- name: Symbolic link from /etc/letsencrypt to /mnt/data/letsencrypt
+  ansible.builtin.file:
+    src: /mnt/data/letsencrypt
+    dest: /etc/letsencrypt
+    owner: root
+    group: root
+    state: link
+- name: Install nginx fail2ban (apt)
+  apt:
+    name: 
+    - nginx
+    - fail2ban
+    state: present
+- name: Install certbot (snap)
+  community.general.snap:
+    name: certbot
+    classic: yes
+    state: present
+- name: Allow Nginx Full rule (ufw)
+  community.general.ufw:
+    rule: allow
+    name: Nginx Full
+- name: Copy fail2ban_jail.local to /etc/fail2ban/jail.local
+  ansible.builtin.copy:
+    src: fail2ban_jail.local
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: '0644'
+- name: Template nginx-https-config to /etc/nginx/sites-available/{{domain}}
+  ansible.builtin.template:
+    src: nginx_https.conf
+    dest: /etc/nginx/sites-available/{{domain}}
+    owner: root
+    group: root
+    mode: '0644'
+  when: https|bool
+- name: Template nginx-http-config to /etc/nginx/sites-available/{{domain}}
+  ansible.builtin.template:
+    src: nginx_http.conf
+    dest: /etc/nginx/sites-available/{{domain}}
+    owner: root
+    group: root
+    mode: '0644'
+  when: not https|bool
+- name: Delete symbolic link /etc/nginx/sites-enabled/default
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+- name: Symbolic link from /etc/nginx/sites-available/{{domain}} to /etc/nginx/sites-enabled/{{domain}}
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{domain}}
+    dest: /etc/nginx/sites-enabled/{{domain}}
+    owner: root
+    group: root
+    state: link
+- name: Reload nginx config
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+- name: Reload fail2ban config
+  ansible.builtin.service:
+    name: fail2ban
+    state: reloaded

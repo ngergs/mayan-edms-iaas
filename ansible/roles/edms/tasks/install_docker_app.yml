@@ -1,0 +1,38 @@
+- name: Create /mnt/data/app
+  file:
+    path: /mnt/data/app
+    state: directory
+- name: Create /mnt/data/redis
+  file:
+    path: /mnt/data/redis
+    state: directory
+- name: Create /mnt/data/postgres
+  file:
+    path: /mnt/data/postgres
+    state: directory
+- name: Copy docker-compose.yml to remote machine
+  ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: /root/
+    owner: root
+    group: root
+    mode: '0600'
+- name: Copy env-file to remote machine
+  ansible.builtin.copy:
+    src: env
+    dest: /root/.env
+    owner: root
+    group: root
+    mode: '0600'
+- name: Install pip (apt)
+  apt:
+    name: python3-pip
+    state: present
+- name: Install python docker-compose (pip)
+  pip:
+    name: docker-compose
+- name: Run `docker-compose up`
+  community.docker.docker_compose:
+    project_src: /root/
+    build: no
+    pull: true

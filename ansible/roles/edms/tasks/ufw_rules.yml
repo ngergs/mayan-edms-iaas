@@ -1,0 +1,17 @@
+- name: Allow SSH connects (ufw)
+  community.general.ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+- name: Delete tcp/2375 rule (ufw)
+  community.general.ufw:
+    rule: allow
+    port: '2375'
+    proto: tcp
+    delete: yes
+- name: Delete tcp/2376 rule (ufw)
+  community.general.ufw:
+    rule: allow
+    port: '2376'
+    proto: tcp
+    delete: yes

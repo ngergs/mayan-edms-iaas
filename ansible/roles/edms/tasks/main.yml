@@ -1,0 +1,6 @@
+- include: update_os.yml
+- include: encrypt_disk.yml
+- include: ufw_rules.yml
+- include: install_docker_app.yml
+- include: install_nginx.yml
+- include: provide_tlsa_script.yml
