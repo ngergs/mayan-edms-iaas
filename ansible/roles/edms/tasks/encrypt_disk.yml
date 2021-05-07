@@ -1,0 +1,35 @@
+- name: Copy LUKS key to remote machine
+  ansible.builtin.copy:
+    src: secure_key
+    dest: /root/
+    owner: root
+    group: root
+    mode: '0600'
+- name: Unmount the original digitalocean mount of the volume
+  ansible.posix.mount:
+    path: /mnt/{{volume_name}}
+    state: unmounted
+- name: Create and open the LUKS container
+  community.crypto.luks_device:
+    name: mayan-edms-volume
+    device: /dev/disk/by-id/scsi-0DO_Volume_{{volume_name}}
+    state: opened
+    keyfile: /root/secure_key
+- name: Setup crypttab entry for automatic mount during boot
+  community.general.crypttab:
+    name: "{{volume_name}}"
+    backing_device: /dev/disk/by-id/scsi-0DO_Volume_{{volume_name}}
+    state: present
+    opts: discard
+    password: /root/secure_key
+- name: Create an ext4 filesystem on the opened LUKS container
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/mapper/{{volume_name}}
+- name: Mount the ext4 volume inside the LUKS container
+  ansible.posix.mount:
+    src: /dev/mapper/{{volume_name}}
+    path: /mnt/data
+    fstype: ext4
+    opts: discard,defaults,noatime
+    state: mounted

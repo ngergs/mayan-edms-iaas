@@ -1,5 +1,5 @@
-.env
 *ssh*
 *.tfstate*
-.terraform
-files
+.terraform*
+ansible/roles/edms/files/env
+ansible/roles/edms/files/secure_key

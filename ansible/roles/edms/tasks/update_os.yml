@@ -1,0 +1,17 @@
+- name: Update cache and custom OS packages to their latest version (apt)
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+- name: Update and cleanup via OS package manager (apt)
+  apt:
+    upgrade: dist
+    autoclean: yes
+    autoremove: yes
+- name: Check if reboot required
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required_file
+- name: Reboot if required
+  reboot:
+  when: reboot_required_file.stat.exists == true
