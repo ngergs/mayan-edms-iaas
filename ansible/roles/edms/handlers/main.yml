@@ -1,2 +1,1 @@
----
-# handlers file for edms
+- include: reload_service.yml

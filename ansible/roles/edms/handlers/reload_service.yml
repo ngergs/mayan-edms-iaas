@@ -1,0 +1,8 @@
+- name: Reload nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+- name: Reload fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: reloaded

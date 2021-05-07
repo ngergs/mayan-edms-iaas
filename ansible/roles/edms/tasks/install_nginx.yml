@@ -27,6 +27,8 @@
     owner: root
     group: root
     mode: '0644'
+  notify:
+  - Reload fail2ban
 - name: Template nginx-https-config to /etc/nginx/sites-available/{{domain}}
   ansible.builtin.template:
     src: nginx_https.conf
@@ -35,6 +37,8 @@
     group: root
     mode: '0644'
   when: https|bool
+  notify:
+  - Reload nginx
 - name: Template nginx-http-config to /etc/nginx/sites-available/{{domain}}
   ansible.builtin.template:
     src: nginx_http.conf
@@ -43,10 +47,14 @@
     group: root
     mode: '0644'
   when: not https|bool
+  notify:
+  - Reload nginx
 - name: Delete symbolic link /etc/nginx/sites-enabled/default
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
+  notify:
+  - Reload nginx
 - name: Symbolic link from /etc/nginx/sites-available/{{domain}} to /etc/nginx/sites-enabled/{{domain}}
   ansible.builtin.file:
     src: /etc/nginx/sites-available/{{domain}}
@@ -54,11 +62,5 @@
     owner: root
     group: root
     state: link
-- name: Reload nginx config
-  ansible.builtin.service:
-    name: nginx
-    state: reloaded
-- name: Reload fail2ban config
-  ansible.builtin.service:
-    name: fail2ban
-    state: reloaded
+  notify:
+  - Reload nginx
