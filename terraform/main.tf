@@ -20,6 +20,7 @@ provider "digitalocean" {
 locals {
   ansible_inventory = templatefile("${path.module}/templates/ansible_inventory.ini", {
     droplet_ipv4_address = digitalocean_droplet.mayan_edms.ipv4_address
+    terraform_private_ssh_key=var.terraform_private_ssh_key
   })
 }
 

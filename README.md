@@ -1,4 +1,4 @@
-# mayan-edms iaas digitalocean setup via terraform and ansible
+# mayan-edms iaas digitalocean setup
 
 This is a simple example project that sets up a digitalocean droplet and volume at digitalocean for the [mayan edms](https://www.mayan-edms.com/) via terraform and ansible.
 

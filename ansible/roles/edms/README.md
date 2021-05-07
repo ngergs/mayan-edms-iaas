@@ -1,22 +1,27 @@
-Role Name
+EDMS
 =========
 
-A brief description of the role goes here.
+Instance that holds a mayan-edms webservice.
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Host should be setup via terraform as described in the root project.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+* domain: A domain that you own and which A and AAAA dns records point to the server used. This is used for the nginx.conf template.
+* volume_name: Digitalocean volume name that will hold the LUKS encrypted data.
+* https: If https with a letsencrypt certificate should be configure in nginx.
+* hsts: If HSTS should be activated. Only relevant if https=true. max-age is configured to be 2 years.
+* hsts_preload: If HSTS preloading should be activated. Only relevant if https=true and hsts=true.
+* expect_ct: If the Expect-CT header should be set to enforce. max-age is configured to be 2 years.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -30,9 +35,9 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+SelfEnergy
