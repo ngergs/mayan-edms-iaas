@@ -1,3 +1,5 @@
 - hosts: edms
   roles:
   - edms
+  vars_files:
+  - vars/edms.yml

@@ -1,2 +1,6 @@
----
-# defaults file for edms
+domain: 
+volume_name: 
+https: false
+hsts: false
+hsts_preload: false
+expect_ct: false
