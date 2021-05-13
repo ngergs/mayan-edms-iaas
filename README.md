@@ -1,6 +1,6 @@
 # mayan-edms iaas digitalocean setup
 
-This is a simple example project that sets up a digitalocean droplet and volume at digitalocean for the [mayan edms](https://www.mayan-edms.com/) via terraform and ansible.
+This is a simple example project that sets up a digitalocean droplet for [mayan edms](https://www.mayan-edms.com/) via terraform and ansible.
 
 ## What is setup?
 A [simple docker installation for mayan edms](https://docs.mayan-edms.com/chapters/docker/install_simple.html) consisting of an application container, a postgresql container and a redis container. The mayan-edms only listens at
@@ -12,7 +12,7 @@ The volume that holds the data is encrypted via LUKS. Letsencrypt and certbot ar
 * All configs are symlinked in the vars directory.
   * Generate a ssh-key pair for ansible and terraform and adjust the terraform_public_ssh_key and terraform_private_ssh_key accordingly.
   * Generate a digitalocean project and volume for the data. Reference their names in the teraform and ansible configs.
-  * Adjust all other configs, especially the do_token and the domain needs to be set. do_token has to be your DigitalOcean access token. If you don't own a domain remove the corresponding part from the nginx.conf in ansible/roles/edms/tempaltes.
+  * Adjust all other configs, especially the do_token and the domain needs to be set. do_token has to be your DigitalOcean access token. If you don't own a domain remove the corresponding part from the nginx.conf in ansible/roles/edms/templates.
 * Now just run terraform in the terraform subfolder to create the server.
 ```
 terraform init
