@@ -3,11 +3,17 @@
     name: "*"
     state: latest
     update_cache: yes
+  notify:
+  - Restart fail2ban
+  - Restart nginx
 - name: Update and cleanup via OS package manager (apt)
   apt:
     upgrade: dist
     autoclean: yes
     autoremove: yes
+  notify:
+  - Restart fail2ban
+  - Restart nginx
 - name: Check if reboot required
   stat:
     path: /var/run/reboot-required
@@ -15,3 +21,4 @@
 - name: Reboot if required
   reboot:
   when: reboot_required_file.stat.exists == true
+  register: reboot

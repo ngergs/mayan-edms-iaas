@@ -1,1 +1,2 @@
 - include: reload_service.yml
+- include: restart_service.yml
