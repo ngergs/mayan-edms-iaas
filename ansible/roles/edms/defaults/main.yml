@@ -2,5 +2,6 @@ domain:
 volume_name: 
 https: false
 hsts: false
+hsts_max_age: 10800
 hsts_preload: false
 expect_ct: false

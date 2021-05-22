@@ -16,6 +16,7 @@ Role Variables
 * volume_name: Digitalocean volume name that will hold the LUKS encrypted data.
 * https: If https with a letsencrypt certificate should be configure in nginx.
 * hsts: If HSTS should be activated. Only relevant if https=true. max-age is configured to be 2 years.
+* hsts_max_age: The HSTS max age setting, only relevant if hsts=true.
 * hsts_preload: If HSTS preloading should be activated. Only relevant if https=true and hsts=true.
 * expect_ct: If the Expect-CT header should be set to enforce. max-age is configured to be 2 years.
 
