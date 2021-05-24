@@ -3,3 +3,8 @@
   - edms
   vars_files:
   - vars/edms.yml
+- hosts: edms
+  roles:
+  - mta-sts
+  vars_files:
+  - vars/mta-sts.yml

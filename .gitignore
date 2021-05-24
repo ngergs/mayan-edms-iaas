@@ -4,3 +4,4 @@
 ansible/roles/edms/files/env
 ansible/roles/edms/files/secure_key
 inventory.ini
+ansible/roles/mta-sts
