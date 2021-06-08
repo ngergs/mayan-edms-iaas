@@ -1,7 +1,7 @@
-domain: ngergs.de
-volume_name: mayan-edms-volume
-https: true
-hsts: true
-hsts_max_age: 63072000
-hsts_preload: true
-expect_ct: true
+domain:
+volume_name:
+https: false
+hsts: false
+hsts_max_age: 10800
+hsts_preload: false
+expect_ct: false

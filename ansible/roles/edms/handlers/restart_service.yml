@@ -2,9 +2,9 @@
   ansible.builtin.service:
     name: nginx
     state: restarted
-  when: reboot_required_file == false
+  when: reboot_required_file.stat.exists == false
 - name: Restart fail2ban
   ansible.builtin.service:
     name: fail2ban
     state: restarted
-  when: reboot_required_file == false
+  when: reboot_required_file.stat.exists == false
